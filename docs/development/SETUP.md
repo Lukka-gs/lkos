@@ -22,7 +22,7 @@ npm ci
 npm run dev
 ```
 
-After merge, use main as the starting point. Private repository access is required. `npm run dev` starts Vite on `127.0.0.1:1435`, compiles the Rust host and opens the notch. There is no second server command. Keep only one LKOS instance running; singleton belongs to LUK-19.
+After merge, use main as the starting point. The repository is public. The local checkout on the owner workstation is `C:\Main\lkos`. `npm run dev` starts Vite on `127.0.0.1:1435`, compiles the Rust host and opens the notch. There is no second server command. Keep only one LKOS instance running; singleton belongs to LUK-19.
 
 Click ↗ to persist a fixture counter and receive a native event. Restart to see the saved count. The tray offers restore interaction, passive click-through, topmost toggle and exit. The × button terminates the app. Stop the development watcher with Ctrl+C after exit if it remains active.
 

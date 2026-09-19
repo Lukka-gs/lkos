@@ -19,6 +19,6 @@ PR description: problem/result, linked Linear issue, tests, native evidence, lim
 
 Required protection configuration: PR required, one approval, dismiss stale approvals, required `Windows foundation` status check, branch up to date, resolved conversations, enforcement for administrators, no force pushes or deletion.
 
-**Current external blocker:** GitHub API returned HTTP 403 when enabling protection on this private repository, requiring GitHub Pro or public visibility. Do not claim enforcement is active. Until the owner resolves the plan/visibility decision, follow PR-only policy manually. No automatic merge or visibility change is authorized by this document.
+**Current status:** The owner authorized public visibility. The repository is public and the protection configuration above is active, including administrator enforcement. PR #1 is ready for review. GitHub refuses self-approval by its author; another authorized reviewer must approve before merge.
 
 CI runs on PRs to main and pushes to main. It installs locked dependencies, checks formatting, lint, architecture, types, tests and compiles the executable on Windows. It has read-only repository permissions and never publishes a release.

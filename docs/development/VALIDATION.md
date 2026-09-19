@@ -39,4 +39,4 @@ Full monitor reconnection/position persistence is LUK-22; fullscreen/games and a
 
 ## Collaboration blockers
 
-GitHub refused private main branch protection with HTTP 403, requiring Pro or public visibility. Visibility is unchanged. Main holds only the bootstrap; foundation changes are proposed by PR. CI results and review must be checked on that PR before merge. M0 cannot close until LUK-18 evidence is completed; repository protection also remains an environment-delivery blocker.
+The owner authorized public visibility and the repository is now public. Main protection is active: PR, one approval, required Windows CI, up-to-date branch and resolved conversations. Force pushes/deletion are disabled and administrators are subject to protection. CI passed for a28dfa6. PR #1 is ready for review; GitHub refused approval by the authenticated author, so an independent reviewer is required. M0 still needs the LUK-18 evidence. The checkout was moved to C:\Main\lkos with its Git history and dependencies intact.

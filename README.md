@@ -39,4 +39,4 @@ Build output: `src-tauri/target/release/lkos.exe`. Installer/update/signing are 
 - [Setup](docs/development/SETUP.md), [Git workflow](docs/development/GIT_WORKFLOW.md), [validation evidence](docs/development/VALIDATION.md)
 - [Contributing](CONTRIBUTING.md)
 
-CI runs on Windows for pull requests, with install, format check, lint, typecheck, tests and build. Main is the default branch; features use PRs. **Protection is not yet enforceable:** GitHub returned HTTP 403 for this private repository, requiring GitHub Pro or public visibility. See the Git workflow document.
+CI runs on Windows for pull requests, with install, format check, lint, typecheck, tests and build. Main is the default branch; features use PRs. **Main protection is active:** PR, one approving review, successful Windows CI, up-to-date branch and resolved conversations are required; force pushes and deletion are disabled. See the Git workflow document.
