@@ -1,0 +1,75 @@
+:root {
+  font-family: "Segoe UI", sans-serif;
+  color: #f0f0f3;
+  background: transparent;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 6px;
+  overflow: hidden;
+}
+.notch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 12px;
+  background: #18191ff5;
+  border: 1px solid #43454f;
+  border-radius: 20px;
+}
+.mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  color: #101518;
+  background: #b8e7da;
+  font-weight: 700;
+}
+.copy {
+  flex: 1;
+  min-width: 0;
+}
+strong {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+small {
+  margin-left: 5px;
+  font-size: 8px;
+  color: #b5b9c6;
+}
+p {
+  font-size: 11px;
+  margin: 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+button {
+  width: 28px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: #2b2d35;
+  color: #fff;
+  font-size: 19px;
+  cursor: pointer;
+}
+button:hover {
+  background: #454854;
+}
+button:focus-visible {
+  outline: 2px solid #b8e7da;
+  outline-offset: 2px;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}

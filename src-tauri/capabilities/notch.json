@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "notch-local",
+  "description": "Local foundation UI: receive native fixture events only",
+  "windows": ["notch"],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "allow-read-settings",
+    "allow-run-probe",
+    "allow-quit"
+  ]
+}
