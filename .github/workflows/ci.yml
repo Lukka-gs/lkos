@@ -1,0 +1,39 @@
+name: CI
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  foundation:
+    name: Windows foundation
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Pin npm
+        run: npm install --global npm@11.12.1
+      - name: Install Rust
+        run: rustup show
+      - name: Install
+        run: npm ci
+      - name: Format check
+        run: npm run format:check
+      - name: Lint and architecture boundaries
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Test
+        run: npm test
+      - name: Build Windows executable
+        run: npm run build

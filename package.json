@@ -1,0 +1,34 @@
+{
+  "name": "lkos",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.15.x",
+    "npm": "11.12.x"
+  },
+  "packageManager": "npm@11.12.1",
+  "scripts": {
+    "dev": "tauri dev",
+    "dev:ui": "vite --host 127.0.0.1 --port 1435 --strictPort",
+    "build": "tauri build --no-bundle",
+    "build:ui": "tsc --noEmit && vite build",
+    "lint": "biome lint . && node scripts/check-boundaries.mjs && cargo clippy --manifest-path src-tauri/Cargo.toml --locked --all-targets -- -D warnings",
+    "format": "biome format --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
+    "format:check": "biome format . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
+    "typecheck": "tsc --noEmit && cargo check --manifest-path src-tauri/Cargo.toml --locked",
+    "test": "vitest run && cargo test --manifest-path src-tauri/Cargo.toml --locked",
+    "test:ui": "vitest run",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@tauri-apps/cli": "2.11.4",
+    "typescript": "5.9.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.1"
+  }
+}
