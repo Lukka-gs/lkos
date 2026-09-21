@@ -12,17 +12,16 @@ See [Tauri Windows prerequisites](https://v2.tauri.app/start/prerequisites/) for
 
 ## Clone and run
 
-The foundation is on `chore/m0-foundation` until its PR is merged:
+The foundation is merged into main:
 
 ```powershell
 git clone https://github.com/Lukka-gs/lkos.git
 cd lkos
-git switch chore/m0-foundation
 npm ci
 npm run dev
 ```
 
-After merge, use main as the starting point. The repository is public. The local checkout on the owner workstation is `C:\Main\lkos`. `npm run dev` starts Vite on `127.0.0.1:1435`, compiles the Rust host and opens the notch. There is no second server command. Keep only one LKOS instance running; singleton belongs to LUK-19.
+Use main as the starting point. The repository is public. The local checkout on the owner workstation is `C:\Main\lkos`. `npm run dev` starts Vite on `127.0.0.1:5187`, compiles the Rust host and opens the notch. There is no second server command. Only one native instance runs; opening the executable again restores it.
 
 Click ↗ to persist a fixture counter and receive a native event. Restart to see the saved count. The tray offers restore interaction, passive click-through, topmost toggle and exit. The × button terminates the app. Stop the development watcher with Ctrl+C after exit if it remains active.
 
@@ -47,7 +46,37 @@ Settings: `%APPDATA%\io.github.lukka-gs.lkos\settings.json`. Do not put real use
 
 - Missing linker/SDK: install the C++ workload, reopen the shell.
 - Blank webview: check WebView2 Runtime and the dev server output.
-- Port 1435 busy: close the other dev server; strictPort prevents connecting to the wrong app.
+- Port 5187 busy: close the other dev server; strictPort prevents connecting to the wrong app.
 - Passive overlay: use the LKOS tray menu to restore input.
 - Missing Rust components: `rustup show`, then retry the command.
 - CI errors must be fixed or explicitly documented; never treat a failed runner as a passed gate.
+
+## Overlay spike laboratory
+
+Run `npm run dev:overlay` instead of `npm run dev`. This debug-only window exposes a target button, native state and the same handlers/menu used by the tray. It stores fixtures in `overlay-lab-settings.json` beside normal settings, leaving `settings.json` untouched.
+
+Choose **Posicionar sobre alvo**, click the notch arrow, then **Ativar click-through** and click the same physical position. The underlying target should increment without changing the native counter. **Restaurar interação** should return input to the notch. Use **Menu nativo do tray** to exercise the shared popup callbacks. This does not replace testing the actual tray icon or another application.
+
+Close the lab to restore input, or use the notch/menu exit to terminate LKOS. The lab is omitted from production builds. See [validation](VALIDATION.md) for observed results and remaining manual checks.
+
+If Windows reserves the development port, inspect `netsh interface ipv4 show excludedportrange protocol=tcp`. Port 5187 replaced 1435 after a reservation prevented startup on the owner workstation. For another conflict, change package.json, vite.config.ts and tauri.conf.json (devUrl and devCsp) together; do not change Windows reservations.
+
+After moving an existing checkout, stale Cargo permission paths can be regenerated with:
+
+```powershell
+cargo clean --manifest-path src-tauri/Cargo.toml -p tauri
+cargo clean --manifest-path src-tauri/Cargo.toml --release -p tauri
+npm run dev
+```
+
+These commands regenerate package build cache; they do not reset settings.
+
+## Single-instance lifecycle (LUK-19)
+
+The first registered native plugin is [Tauri Single Instance](https://v2.tauri.app/plugin/single-instance/), pinned to 2.4.5. Later launches notify the existing process and exit before opening its settings store. The callback ignores arguments and working directory, restores pointer interaction and shows the existing notch without requesting keyboard focus. Window work is dispatched to the main thread.
+
+Debug, release and overlay-lab launches share the application identifier. Exit the running app before switching modes or testing a newly compiled binary. Starting a second dev server can still fail on the occupied Vite port; test the executable directly.
+
+This is singleton/reopen groundwork for LUK-19. Restart after native process termination reloads the existing atomic settings file; it is not automatic crash supervision, renderer recovery or corrupt-settings recovery. Those cases remain open. The outstanding physical LUK-18 matrix and the M1 dependency on M0 remain unchanged.
+
+After `npm run build`, close LKOS and run `npm run test:lifecycle` on an interactive Windows desktop. The test refuses to run while an LKOS process exists, starts its own instances, verifies duplicate exits and unchanged settings hashes, forces the owned primary process to terminate, then restarts it and compares settings again. It cleans up only processes it created. It is an explicit local smoke test, not part of headless CI or a focus/visual assertion.

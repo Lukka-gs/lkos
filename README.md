@@ -11,12 +11,11 @@ Windows x64, Node 24.15.0/npm 11.12.1, Rust via rustup, Visual Studio C++ Build 
 ```powershell
 git clone https://github.com/Lukka-gs/lkos.git
 cd lkos
-git switch chore/m0-foundation
 npm ci
 npm run dev
 ```
 
-The branch command is needed until the foundation PR is merged. One command starts both Vite and the native app. Click ↗ to test persistence and the event bridge; × or the tray menu exits. Keep one instance running at a time.
+One command starts both Vite and the native app. Click ↗ to test persistence and the event bridge; × or the tray menu exits. Opening the executable again restores the running notch. Close it before switching between development and release builds.
 
 | Command | Result |
 | --- | --- |
@@ -39,4 +38,4 @@ Build output: `src-tauri/target/release/lkos.exe`. Installer/update/signing are 
 - [Setup](docs/development/SETUP.md), [Git workflow](docs/development/GIT_WORKFLOW.md), [validation evidence](docs/development/VALIDATION.md)
 - [Contributing](CONTRIBUTING.md)
 
-CI runs on Windows for pull requests, with install, format check, lint, typecheck, tests and build. Main is the default branch; features use PRs. **Main protection is active:** PR, one approving review, successful Windows CI, up-to-date branch and resolved conversations are required; force pushes and deletion are disabled. See the Git workflow document.
+CI runs on Windows for pull requests, with install, format check, lint, typecheck, tests and build. Main is the default branch; features use PRs. Main protection and mandatory independent review are disabled at the owner's request while development is solo. See the Git workflow document.
