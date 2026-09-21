@@ -56,6 +56,20 @@ fn quit(app: tauri::AppHandle) {
 
 pub fn run() -> tauri::Result<()> {
     let builder = tauri::Builder::default()
+        // Register before setup: secondary launches must not open the settings store.
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            let handle = app.clone();
+            // Startup itself shows the notch if a reopen arrives before state is ready.
+            if let Err(error) = app.run_on_main_thread(move || {
+                if handle.try_state::<crate::overlay::OverlayState>().is_some()
+                    && let Err(error) = crate::overlay::action(&handle, "restore")
+                {
+                    eprintln!("LKOS reopen failed: {error}");
+                }
+            }) {
+                eprintln!("LKOS reopen dispatch failed: {error}");
+            }
+        }))
         .on_menu_event(|app, event| {
             let id = event.id.as_ref();
             if !["restore", "passive", "top", "quit"].contains(&id) {
