@@ -67,10 +67,12 @@ Migration pipeline upgrades the fixture schema 0 to 1, retaining topmost prefere
 
 ## Shell and Windows
 
-Single compact transparent frameless window, topmost preference, tray and explicit exit. Placement uses the current monitor (primary fallback), converts logical dimensions to physical pixels and clamps both axes and dimensions to its work area. Scale-factor changes recalculate placement. `focus:false` avoids requesting focus at startup; interaction can focus the UI. Tray selects whole-window passive click-through or restores interaction without requesting focus. Passive mode also disables window focusability. Native overlay operations live in overlay.rs, pure geometry in placement.rs. A debug-only lab shares these handlers and uses separate fixture settings. Per-pixel interactive regions, focus-safe expansion, singleton, restart recovery, hot-plug and per-monitor persisted positions remain M1/LUK-18 validation work.
+Single compact transparent frameless window, topmost preference, tray and explicit exit. Placement uses the current monitor (primary fallback), converts logical dimensions to physical pixels and clamps both axes and dimensions to its work area. Scale-factor changes recalculate placement. `focus:false` avoids requesting focus at startup; interaction can focus the UI. Tray selects whole-window passive click-through or restores interaction without requesting focus. Passive mode also disables window focusability. Native overlay operations live in overlay.rs, pure geometry in placement.rs. A debug-only lab shares these handlers and uses separate fixture settings. Per-pixel interactive regions, focus-safe expansion, automatic crash recovery, hot-plug and per-monitor persisted positions remain M1/LUK-18 validation work.
 
 Future Windows APIs live behind Rust adapters: Win32 window/process hooks, WinRT media, Core Audio, OLE drop, DWM thumbnails/backdrops. Each owns cancellation and must release hooks/subscriptions when inactive. UI gets normalized DTOs rather than HWNDs or arbitrary paths to execute.
 
 ## Distribution
 
 CI builds the Windows executable with locked dependencies. It does not sign, publish or install the app. M9 will configure installer, signing, startup opt-in, signed updates, channels and migration/rollback policy. Main receives changes through reviewed PRs only.
+
+LUK-19 singleton: the native single-instance plugin registers before setup and owns duplicate-launch arbitration. A later launch restores the current notch through the shared overlay adapter without invoking modules, parsing external commands or reopening settings. Debug and release share one identity. See SETUP.md for the native lifecycle smoke test.

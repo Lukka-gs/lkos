@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-One command starts both Vite and the native app. Click ↗ to test persistence and the event bridge; × or the tray menu exits. Keep one instance running at a time.
+One command starts both Vite and the native app. Click ↗ to test persistence and the event bridge; × or the tray menu exits. Opening the executable again restores the running notch. Close it before switching between development and release builds.
 
 | Command | Result |
 | --- | --- |

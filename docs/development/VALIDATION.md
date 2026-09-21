@@ -45,3 +45,15 @@ LUK-18 and M0 remain in progress. Full monitor reconnection/position persistence
 ## Collaboration status
 
 PR #1 merged the foundation. The repository is public and main protection is disabled by the owner for solo development. Work continues on issue branches with PRs and Windows CI. Local test results do not imply a future remote CI run has passed.
+
+## LUK-19 process validation — 2026-09-21
+
+The single-instance implementation passed `npm run check` (format, lint, boundaries, typecheck, 12 existing unit tests and Windows release build). The explicit local `npm run test:lifecycle` also passed:
+
+- Primary release process created a native window.
+- Three consecutive duplicate launches exited with code 0; the primary remained alive.
+- Settings SHA-256 remained unchanged across those launches.
+- After a forced termination of the owned primary, a new process created its window and retained the exact settings hash.
+- The test cleaned up the processes it started.
+
+The first smoke attempt failed because this PowerShell did not expose Get-FileHash; the script now uses .NET SHA-256 and the full smoke test passed on retry. This is process/persistence evidence, not a visual focus test, automatic restart supervisor, renderer-crash recovery, simultaneous cold-start stress test or damaged-settings recovery. LUK-19 remains in progress; physical LUK-18 checks are still required before M0/M1 acceptance.
