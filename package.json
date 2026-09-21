@@ -10,7 +10,8 @@
   "packageManager": "npm@11.12.1",
   "scripts": {
     "dev": "tauri dev",
-    "dev:ui": "vite --host 127.0.0.1 --port 1435 --strictPort",
+    "dev:overlay": "tauri dev -- -- --overlay-lab",
+    "dev:ui": "vite --host 127.0.0.1 --port 5187 --strictPort",
     "build": "tauri build --no-bundle",
     "build:ui": "tsc --noEmit && vite build",
     "lint": "biome lint . && node scripts/check-boundaries.mjs && cargo clippy --manifest-path src-tauri/Cargo.toml --locked --all-targets -- -D warnings",

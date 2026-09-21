@@ -1,0 +1,11 @@
+{
+  "identifier": "overlay-lab",
+  "description": "Debug-only spike window; native commands absent from release builds",
+  "windows": ["overlay-lab"],
+  "permissions": [
+    "allow-lab-action",
+    "allow-lab-snapshot",
+    "core:event:allow-listen",
+    "core:event:allow-unlisten"
+  ]
+}
