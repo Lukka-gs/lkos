@@ -1,0 +1,47 @@
+body.overlay-lab {
+  padding: 32px;
+  background: #18191f;
+  overflow: auto;
+}
+.overlay-lab h1 {
+  margin: 0;
+  font-size: 22px;
+}
+.overlay-lab #target {
+  position: absolute;
+  left: 32px;
+  top: 72px;
+  width: 360px;
+  height: 76px;
+  background: #17664d;
+  font-size: 16px;
+}
+.overlay-lab #target-count {
+  margin-top: 108px;
+  font-size: 16px;
+}
+.overlay-lab .lab-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.overlay-lab .lab-controls button {
+  width: auto;
+  height: auto;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.overlay-lab p {
+  white-space: normal;
+  font-size: 13px;
+}
+.overlay-lab pre {
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 220px;
+  border: 1px solid #43454f;
+  padding: 10px;
+  font-size: 12px;
+}

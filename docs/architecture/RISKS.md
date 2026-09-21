@@ -13,6 +13,6 @@
 | Settings corruption / failed writes | Validation, atomic replacement, no overwrite of invalid/future schemas; LUK-20 | Rust tests; recovery UI remains future work |
 | Duplicate processes writing settings | Singleton before production use; LUK-19 | M0 prototype must run one instance at a time |
 | Installer/update trust | Signed packages and signed update metadata; LUK-66/67 | Build only; no release pipeline |
-| Review gate | Public repository with protected main; one independent approval required | Protection active; GitHub prevents author self-approval |
+| Review gate | Public repository; branch workflow and CI retained | Main protection disabled by owner for solo development; review before merging |
 
 Open M0 gates must be recorded on LUK-18 and LUK-5. Do not close the parent milestone while the native spike remains unverified.

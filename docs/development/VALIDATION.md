@@ -1,42 +1,47 @@
 # Foundation validation
 
-Validation date: 2026-09-19. Host: Windows build 26200, x64; Node 24.15.0, npm 11.12.1, Rust 1.97.1. The development target and release executable were run locally.
+Latest validation: 2026-09-21, Windows x64, Node 24.15.0, npm 11.12.1, Rust 1.97.1. Checkout: `C:\Main\lkos`.
 
 ## Automated gates
 
-- Biome formatting/lint, import boundaries, rustfmt and Clippy with warnings denied.
-- TypeScript strict check and Rust check.
-- Five Vitest tests: event routing/unsubscribe, subscriber failure and payload isolation, independent module lifecycle, duplicate/permission rejection, failed startup cleanup/retry.
-- Four Rust tests: restart persistence, v0 migration, corrupt/future/invalid schema preservation, failed save without in-memory commit.
-- Release build with locked dependencies, executable around 7.4 MiB (size is not a RAM measurement).
+Formatting (Biome/rustfmt), lint (Biome/Clippy), module boundaries, TypeScript and Cargo checks passed. Five Vitest tests cover event routing, unsubscribe, subscriber/payload isolation and module lifecycle failure/retry. Seven Rust tests cover four persistence scenarios and three placement scenarios.
 
-The first sandboxed Vitest attempt could not spawn workers (EPERM). Running the same tests outside the sandbox passed; no test was disabled. Initial compile exposed the required Windows icon, which was added. Vite now ignores native build output to avoid unintended UI reloads.
+Placement tests exercise 100%, 125%, 150% and 200% scale, negative coordinates, taskbar offsets, small work areas and invalid display data. These are coordinate calculations, not physical mixed-DPI testing.
+
+The Windows release build passed. The production frontend contains no lab UI or lab command references. Native lab commands/window creation are compiled only with debug assertions. Packaging, signing and updates remain M9.
+
+Moving the existing Cargo cache left absolute references to the old checkout. Regenerating the Tauri package cache for both debug and release resolved the build failure. No source or settings were deleted.
 
 ## Observed desktop behavior
 
+2026-09-21 used `npm run dev:overlay`, one monitor at scale 1, work area 2560 x 1392, origin (0,0). The lab is a separate window in the same process, with separate fixture settings.
+
 | Check | Evidence / result |
 | --- | --- |
-| Single development command | `npm run dev` started Vite + Cargo and opened the notch |
-| Native renderer | Computer Use displayed a compact frameless notch with transparent exterior margins |
-| IPC + event bus | Clicking ↗ changed status to `Evento nativo recebido · 1` |
-| Durable write | Native settings file contained schema 1 and probeCount 1 |
-| Exit control | Clicking × ended the app; no LKOS process remained |
-| Release without dev server | Release executable opened and displayed `Pronto · 1 testes salvos` |
-| Restart persistence | Counter restored from the previous development process |
-| Tray construction | Native tray/menu creation succeeded during startup; interactive menu checks remain below |
+| Startup | One command opened the notch and diagnostic lab |
+| Transparent frameless notch | Target window remained visible through exterior margins |
+| IPC | Clicking notch arrow changed native fixture count 0 -> 1 |
+| Passive input | With notch over target and passive=true, physical click at the arrow position incremented underlying target 0 -> 1; native count remained 1 |
+| Restore input | Restore followed by arrow click incremented native count 1 -> 2; target stayed 1 |
+| Native menu | Lab popup uses the same menu and callback as tray; topmost changed true -> false with event `menu:top ok` |
+| Persistence | Lab settings contained schemaVersion 1, alwaysOnTop false, probeCount 2 |
+| Native menu exit | Choosing Encerrar LKOS closed the process |
+| Focus observations | Passive diagnostic showed notchFocused=false and labFocused=true; automation also activates its target, so this is not a full focus-stealing proof |
 
-Computer Use did not expose the Windows taskbar as a targetable window in this session, so tray menu actions and real click-through delivery to another application are not claimed as verified. LUK-18 remains open.
+The actual taskbar tray icon was not clicked: the computer-use interface did not expose the taskbar as a target. Popup validation proves the shared menu path, not tray discoverability. Cross-process click-through and focus behavior in other apps remain unverified.
+
+Previous 2026-09-19 checks also observed the normal development notch, durable settings write, explicit close, release startup without the dev server and restored fixture count after restart.
 
 ## Remaining native spike matrix (LUK-18)
 
-1. Use tray to toggle topmost, focus another ordinary app, verify stacking, restart and confirm preference.
-2. Put a harmless target button in another app beneath the notch. Select tray click-through and verify the underlying button receives input. Restore through tray and verify the notch receives input again.
-3. Verify startup/restore do not steal focus; test keyboard navigation and explicit exit through tray.
-4. Test 100%, 125%, 150% and 200% DPI, including mixed-DPI monitors and negative coordinates. Record screen setup and actual result.
-5. Check ordinary apps, maximized windows, GPU rendering variations and taskbar arrangements. Record transparent-edge artifacts if any.
+1. Access the actual tray icon; restore input and exit from there.
+2. Verify click-through against a harmless button in another application, then restore notch input.
+3. Verify topmost stacking over ordinary/maximized apps and persisted preference after restart.
+4. Verify startup/restore do not steal focus, including keyboard navigation.
+5. Exercise physical 100%, 125%, 150% and 200% DPI, mixed-DPI monitors and negative coordinates. Record actual results and transparency artifacts.
 
-Full monitor reconnection/position persistence is LUK-22; fullscreen/games and accessibility matrix are LUK-63–65. No idle CPU/RAM target is declared passed. No installer, updater, production startup integration or signing was tested.
+LUK-18 and M0 remain in progress. Full monitor reconnection/position persistence is LUK-22; fullscreen/games and accessibility matrix are LUK-63–65. No idle CPU/RAM target, installer, updater or startup integration is declared passed.
 
-## Collaboration blockers
+## Collaboration status
 
-The owner authorized public visibility and the repository is now public. Main protection is active: PR, one approval, required Windows CI, up-to-date branch and resolved conversations. Force pushes/deletion are disabled and administrators are subject to protection. CI passed for a28dfa6. PR #1 is ready for review; GitHub refused approval by the authenticated author, so an independent reviewer is required. M0 still needs the LUK-18 evidence. The checkout was moved to C:\Main\lkos with its Git history and dependencies intact.
+PR #1 merged the foundation. The repository is public and main protection is disabled by the owner for solo development. Work continues on issue branches with PRs and Windows CI. Local test results do not imply a future remote CI run has passed.

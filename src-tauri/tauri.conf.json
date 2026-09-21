@@ -5,7 +5,7 @@
   "identifier": "io.github.lukka-gs.lkos",
   "build": {
     "beforeDevCommand": "npm run dev:ui",
-    "devUrl": "http://127.0.0.1:1435",
+    "devUrl": "http://127.0.0.1:5187",
     "beforeBuildCommand": "npm run build:ui",
     "frontendDist": "../dist"
   },
@@ -28,7 +28,7 @@
     ],
     "security": {
       "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'",
-      "devCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost ws://127.0.0.1:1435; object-src 'none'; frame-src 'none'"
+      "devCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost ws://127.0.0.1:5187; object-src 'none'; frame-src 'none'"
     }
   },
   "bundle": { "active": false }
